@@ -1,0 +1,11 @@
+# Ignore compiled classes and temporary files
+build/
+bin/
+*.class
+sources.txt
+tomcat.zip
+apache-tomcat-*/
+student_management_system.war
+
+# Keep external libraries and source
+!WebContent/WEB-INF/lib/*.jar

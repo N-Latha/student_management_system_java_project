@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student - Student Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- 1. Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.jsp" class="nav-brand">
+                <div class="brand-icon">S</div>
+                <span>StudentMS</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.jsp" class="nav-item">Dashboard</a></li>
+                <li><a href="students" class="nav-item">Students</a></li>
+                <li><a href="add-student.html" class="nav-item active nav-btn-add">+ Add Student</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 2. Form Container -->
+    <main class="container">
+        
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Register New Student</h1>
+                <p class="page-subtitle">Fill in the student's personal and academic details below.</p>
+            </div>
+            <div>
+                <a href="students" class="btn btn-secondary">&larr; Back to Student List</a>
+            </div>
+        </div>
+
+        <!-- Dynamic Alert Container (Handled by JS via URL Params) -->
+        <div id="alertPlaceholder"></div>
+
+        <div class="form-container">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Student Information Form</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Standard HTML Form submitting to AddStudentServlet -->
+                    <form id="studentForm" action="addStudent" method="POST" novalidate>
+                        
+                        <!-- Full Name Field -->
+                        <div class="form-group">
+                            <label for="name" class="form-label">Full Name <span class="required">*</span></label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Aarav Sharma" required>
+                            <div id="nameError" class="error-feedback"></div>
+                        </div>
+
+                        <!-- Email Address Field -->
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="e.g. aarav.sharma@example.com" required>
+                            <div id="emailError" class="error-feedback"></div>
+                            <small class="form-text">Must be a unique email address.</small>
+                        </div>
+
+                        <!-- Phone Number Field -->
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. 9876543210" maxlength="10" required>
+                            <div id="phoneError" class="error-feedback"></div>
+                            <small class="form-text">Enter 10-digit mobile number.</small>
+                        </div>
+
+                        <!-- Department & Year Row -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="department" class="form-label">Department <span class="required">*</span></label>
+                                <select id="department" name="department" class="form-control" required>
+                                    <option value="">-- Select Department --</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Information Technology">Information Technology</option>
+                                    <option value="Electronics & Comm">Electronics & Comm</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Civil Engineering">Civil Engineering</option>
+                                    <option value="Electrical Engineering">Electrical Engineering</option>
+                                    <option value="Biotechnology">Biotechnology</option>
+                                </select>
+                                <div id="departmentError" class="error-feedback"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="year" class="form-label">Academic Year <span class="required">*</span></label>
+                                <select id="year" name="year" class="form-control" required>
+                                    <option value="">-- Select Year --</option>
+                                    <option value="1">1st Year (Freshman)</option>
+                                    <option value="2">2nd Year (Sophomore)</option>
+                                    <option value="3">3rd Year (Junior)</option>
+                                    <option value="4">4th Year (Senior)</option>
+                                </select>
+                                <div id="yearError" class="error-feedback"></div>
+                            </div>
+                        </div>
+
+                        <!-- Form Submit & Reset Actions -->
+                        <div class="form-actions">
+                            <a href="students" class="btn btn-secondary">Cancel</a>
+                            <button type="reset" class="btn btn-secondary">Reset Form</button>
+                            <button type="submit" class="btn btn-primary">&#10003; Save Student</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 3. Footer -->
+    <footer class="footer">
+        <p>&copy; Student Management System. Built with Java Servlets, JDBC, MySQL, and Vanilla JS.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Check URL parameters for any server-side validation error messages
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        const alertPlaceholder = document.getElementById('alertPlaceholder');
+
+        if (error && alertPlaceholder) {
+            let message = "An error occurred while saving the student.";
+            if (error === "empty_fields") message = "All required fields must be filled.";
+            if (error === "invalid_year") message = "Academic year must be between 1 and 4.";
+            if (error === "failed") message = "Failed to save student. Email may already be registered.";
+
+            alertPlaceholder.innerHTML = `
+                <div class="alert alert-danger">
+                    <span>&#9888; <strong>Error:</strong> ${message}</span>
+                    <button class="alert-close" onclick="this.parentElement.remove();">&times;</button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
